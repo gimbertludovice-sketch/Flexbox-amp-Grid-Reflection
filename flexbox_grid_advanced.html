@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexbox & Grid: Advanced CSS3 & HTML5 Reflection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --accent: #8b5cf6;
+            --dark: #1f2937;
+            --light: #f3f4f6;
+            --surface: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --border: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        /* Header with gradient and animation */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main container */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            gap: 2rem;
+        }
+
+        /* Section styling with CSS animations */
+        section {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        section:nth-child(1) { animation-delay: 0.1s; }
+        section:nth-child(2) { animation-delay: 0.2s; }
+        section:nth-child(3) { animation-delay: 0.3s; }
+        section:nth-child(4) { animation-delay: 0.4s; }
+        section:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+            transform: translateY(-4px);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-left: 4px solid var(--primary);
+            padding-left: 1rem;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        h4 {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Expandable details sections */
+        details {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            background: linear-gradient(135deg, var(--light) 0%, #fafbff 100%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        details[open] {
+            background: linear-gradient(135deg, #f0f9ff 0%, #f5f7fa 100%);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        summary {
+            font-weight: 600;
+            color: var(--primary);
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        summary:hover {
+            color: var(--accent);
+        }
+
+        summary::marker {
+            color: var(--primary);
+        }
+
+        /* Comparison grid */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .comparison-card {
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comparison-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, currentColor 0%, transparent 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .comparison-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-flexbox {
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+
+        .card-grid {
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+
+        .card-legacy {
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+
+        .card-modern {
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+
+        /* Demo sections */
+        .demo-container {
+            background: linear-gradient(135deg, var(--light) 0%, #fafbff 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .demo-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Flexbox demo */
+        .flexbox-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            background: linear-gradient(135deg, #1db954 0%, #1ed760 100%);
+            padding: 1rem;
+            border-radius: 8px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.95; }
+        }
+
+        .flexbox-nav > div {
+            display: flex;
+            gap: 1rem;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-item {
+            font-size: 0.9rem;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item:hover::after {
+            width: 100%;
+        }
+
+        /* Grid demo */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+        }
+
+        .grid-item {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: var(--shadow-md);
+        }
+
+        .grid-item:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3);
+            filter: brightness(1.1);
+        }
+
+        .grid-item:active {
+            transform: scale(0.98);
+        }
+
+        /* Code blocks with syntax highlighting */
+        .code-block {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: #e5e7eb;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 1rem 0;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .keyword { color: #f87171; }
+        .property { color: #60a5fa; }
+        .value { color: #34d399; }
+        .comment { color: #9ca3af; }
+        .string { color: #fbbf24; }
+
+        /* Feature badges */
+        .feature-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 0.25rem;
+            animation: pulse 2s infinite;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Toggle switches for interactive demos */
+        .toggle-group {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .toggle-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border);
+            background: var(--surface);
+            color: var(--text-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .toggle-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
+        }
+
+        .toggle-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Status indicators */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .status-good {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+
+        .status-bad {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #7f1d1d;
+            border: 1px solid #fca5a5;
+        }
+
+        .status-warning {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+
+        /* Responsive utilities */
+        .flex-demo {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Bullet lists with icons */
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .status-good li::before {
+            content: '✓';
+            color: var(--success);
+        }
+
+        .status-bad li::before {
+            content: '✕';
+            color: var(--danger);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: var(--surface);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            animation: fadeInUp 0.6s ease-out 0.6s forwards;
+            opacity: 0;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        .footer-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin: 0.25rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Media queries for responsive design */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.5rem; }
+            section { padding: 1.5rem; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .grid-2col { grid-template-columns: 1fr; }
+            .flexbox-nav {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .flexbox-nav > div {
+                flex-direction: column;
+            }
+            .grid-container {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            }
+        }
+
+        /* Utility classes */
+        .text-center { text-align: center; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .p-2 { padding: 1rem; }
+        .gap-1 { gap: 0.5rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); color: white; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: var(--shadow-lg);">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; max-width: 900px; margin: 0 auto;">
+                <div>
+                    <p style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.5px;">Student Name</p>
+                    <p style="font-size: 1.25rem; font-weight: 600; margin: 0;">Gimbert Ludovice</p>
+                </div>
+                <div>
+                    <p style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.5px;">Course & Section</p>
+                    <p style="font-size: 1.25rem; font-weight: 600; margin: 0;">BSIT MWD, WITMWD1M1-S</p>
+                </div>
+                <div>
+                    <p style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.5px;">Professor</p>
+                    <p style="font-size: 1.25rem; font-weight: 600; margin: 0;">Rhea Lei Talavera</p>
+                </div>
+            </div>
+        </div>
+        <h1>🎨 Flexbox & Grid Mastery</h1>
+        <p class="subtitle">An advanced exploration of CSS3 layouts with HTML5 semantics and interactive demonstrations</p>
+    </header>
+
+    <main>
+        <!-- Section 1: Dimensionality -->
+        <section>
+            <h2>📐 The Dimensionality Shift: 1D vs 2D</h2>
+            
+            <article class="flex-demo">
+                <details open>
+                    <summary>🔹 Flexbox (1D Layout) - Single Axis Control</summary>
+                    <div class="mt-2">
+                        <p>Flexbox manages items along a single axis (row or column). Perfect for components that flow in one direction.</p>
+                        
+                        <div class="demo-container">
+                            <div class="demo-label">Spotify Navigation Example</div>
+                            <div class="flexbox-nav">
+                                <span style="font-weight: bold;">♪ Spotify</span>
+                                <div>
+                                    <div class="nav-item">Home</div>
+                                    <div class="nav-item">Search</div>
+                                    <div class="nav-item">Library</div>
+                                </div>
+                                <span>👤 Profile</span>
+                            </div>
+                        </div>
+
+                        <div class="code-block">
+<span class="keyword">.navbar</span> {<br/>
+&nbsp;&nbsp;<span class="property">display:</span> <span class="value">flex</span>;<br/>
+&nbsp;&nbsp;<span class="property">justify-content:</span> <span class="value">space-between</span>; <span class="comment">/* Horizontal spacing */</span><br/>
+&nbsp;&nbsp;<span class="property">align-items:</span> <span class="value">center</span>; <span class="comment">/* Vertical alignment */</span><br/>
+&nbsp;&nbsp;<span class="property">gap:</span> <span class="value">1rem</span>;<br/>
+}
+                        </div>
+
+                        <div class="toggle-group">
+                            <span style="flex: 1;">Key Flexbox Properties:</span>
+                            <span class="feature-badge">justify-content</span>
+                            <span class="feature-badge">align-items</span>
+                            <span class="feature-badge">gap</span>
+                            <span class="feature-badge">flex-wrap</span>
+                        </div>
+                    </div>
+                </details>
+
+                <details open>
+                    <summary>⬜ Grid (2D Layout) - Dual Axis Control</summary>
+                    <div class="mt-2">
+                        <p>Grid controls items on both rows and columns simultaneously. Ideal for complex, structured layouts.</p>
+                        
+                        <div class="demo-container">
+                            <div class="demo-label">Product Grid Example</div>
+                            <div class="grid-container">
+                                <div class="grid-item">1</div>
+                                <div class="grid-item">2</div>
+                                <div class="grid-item">3</div>
+                                <div class="grid-item">4</div>
+                                <div class="grid-item">5</div>
+                                <div class="grid-item">6</div>
+                            </div>
+                        </div>
+
+                        <div class="code-block">
+<span class="keyword">.product-grid</span> {<br/>
+&nbsp;&nbsp;<span class="property">display:</span> <span class="value">grid</span>;<br/>
+&nbsp;&nbsp;<span class="property">grid-template-columns:</span> <span class="value">repeat(auto-fit, minmax(200px, 1fr))</span>; <span class="comment">/* Responsive columns */</span><br/>
+&nbsp;&nbsp;<span class="property">gap:</span> <span class="value">1.5rem</span>; <span class="comment">/* Space between items */</span><br/>
+&nbsp;&nbsp;<span class="property">auto-flow:</span> <span class="value">dense</span>; <span class="comment">/* Smart item placement */</span><br/>
+}
+                        </div>
+
+                        <div class="toggle-group">
+                            <span style="flex: 1;">Key Grid Properties:</span>
+                            <span class="feature-badge">grid-template-columns</span>
+                            <span class="feature-badge">grid-template-rows</span>
+                            <span class="feature-badge">grid-auto-flow</span>
+                            <span class="feature-badge">gap</span>
+                        </div>
+                    </div>
+                </details>
+            </article>
+
+            <div class="mt-3" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid var(--primary); border-radius: 8px; padding: 1rem; color: #1e40af;">
+                <strong>💡 Quick Decision:</strong> Use Flexbox when items flow in one direction. Use Grid when you need to control both axes independently.
+            </div>
+        </section>
+
+        <!-- Section 2: Legacy vs Modern -->
+        <section>
+            <h2>🚀 Outgrowing the Past: Legacy vs Modern</h2>
+            
+            <div class="comparison-grid">
+                <article class="comparison-card card-legacy">
+                    <h4>❌ Legacy Approach (Pre-Flexbox)</h4>
+                    <p style="color: var(--text-secondary);">Brittle positioning hacks using floats, absolute positioning, and line-height tricks.</p>
+                    
+                    <div class="code-block" style="font-size: 0.75rem;">
+<span class="keyword">button</span> {<br/>
+&nbsp;&nbsp;<span class="property">float:</span> <span class="value">left</span>;<br/>
+&nbsp;&nbsp;<span class="property">margin-right:</span> <span class="value">10px</span>;<br/>
+&nbsp;&nbsp;<span class="property">line-height:</span> <span class="value">40px</span>;<br/>
+}
+                    </div>
+
+                    <div class="status-indicator status-bad">
+                        <ul style="margin: 0; padding-left: 0;">
+                            <li>Breaks on resize</li>
+                            <li>Content order tied to layout</li>
+                            <li>Alignment is trial & error</li>
+                            <li>Vertical centering nightmare</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="comparison-card card-modern">
+                    <h4>✅ Modern Approach (Flexbox/Grid)</h4>
+                    <p style="color: var(--text-secondary);">Intentional, semantic layout properties that scale elegantly with content.</p>
+                    
+                    <div class="code-block" style="font-size: 0.75rem;">
+<span class="keyword">.button-container</span> {<br/>
+&nbsp;&nbsp;<span class="property">display:</span> <span class="value">flex</span>;<br/>
+&nbsp;&nbsp;<span class="property">gap:</span> <span class="value">10px</span>;<br/>
+&nbsp;&nbsp;<span class="property">align-items:</span> <span class="value">center</span>;<br/>
+}
+                    </div>
+
+                    <div class="status-indicator status-good">
+                        <ul style="margin: 0; padding-left: 0;">
+                            <li>Adapts fluidly to any screen</li>
+                            <li>Decouples content order from layout</li>
+                            <li>Alignment is semantic & predictable</li>
+                            <li>WCAG accessible by default</li>
+                        </ul>
+                    </div>
+                </article>
+            </div>
+
+            <details class="mt-3">
+                <summary>📊 Impact on Developer Workflow</summary>
+                <div class="mt-2">
+                    <div class="grid-2col">
+                        <div>
+                            <h4>For Developers</h4>
+                            <p>CSS becomes <strong>declarative</strong> instead of imperative. You write "center this" instead of "hack it with negative margins." Code is reusable, future-proof, and doesn't require media query workarounds.</p>
+                        </div>
+                        <div>
+                            <h4>For Users</h4>
+                            <p>Layouts adapt <strong>genuinely and fluidly</strong>. Mobile, tablet, and desktop all look intentional. No overflow, no broken wrapping, no invisible text due to brittle calculations.</p>
+                        </div>
+                        <div>
+                            <h4>For Teams</h4>
+                            <p>Design-to-code transfer is <strong>direct and unambiguous</strong>. Developers and designers speak the same language. Figma layouts map clearly to CSS Grid/Flexbox without guesswork.</p>
+                        </div>
+                        <div>
+                            <h4>For Products</h4>
+                            <p>Maintenance becomes <strong>predictable</strong>. Adding features doesn't require re-architecting layouts. Responsive behavior is intentional, not accident-prone. Performance improves (no clearing floats).</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Section 3: Advanced CSS3 Features -->
+        <section>
+            <h2>✨ Advanced CSS3 Features Showcase</h2>
+            
+            <article>
+                <details>
+                    <summary>🎬 Animations & Transitions</summary>
+                    <div class="mt-2">
+                        <p>CSS3 animations and transitions enable smooth, hardware-accelerated effects without JavaScript.</p>
+                        <div class="code-block">
+<span class="keyword">@keyframes slideDown</span> {<br/>
+&nbsp;&nbsp;<span class="keyword">from</span> { <span class="property">transform:</span> <span class="value">translateY(-30px)</span>; <span class="property">opacity:</span> <span class="value">0</span>; }<br/>
+&nbsp;&nbsp;<span class="keyword">to</span> { <span class="property">transform:</span> <span class="value">translateY(0)</span>; <span class="property">opacity:</span> <span class="value">1</span>; }<br/>
+}<br/><br/>
+<span class="keyword">element</span> {<br/>
+&nbsp;&nbsp;<span class="property">animation:</span> <span class="value">slideDown 0.6s ease-out</span>;<br/>
+}
+                        </div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>🌈 Gradients & Filters</summary>
+                    <div class="mt-2">
+                        <p>Modern gradient syntax and visual filters for stunning, performant effects.</p>
+                        <div class="code-block">
+<span class="keyword">.hero</span> {<br/>
+&nbsp;&nbsp;<span class="property">background:</span> <span class="value">linear-gradient(135deg, #667eea 0%, #764ba2 100%)</span>;<br/>
+&nbsp;&nbsp;<span class="property">filter:</span> <span class="value">drop-shadow(0 10px 20px rgba(0,0,0,0.2)) brightness(1.1)</span>;<br/>
+}
+                        </div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>🎯 Transforms & Pseudo-elements</summary>
+                    <div class="mt-2">
+                        <p>CSS3 transforms enable rotation, scaling, and skewing. Pseudo-elements (::before, ::after) create decorative effects without extra HTML.</p>
+                        <div class="code-block">
+<span class="keyword">.card::before</span> {<br/>
+&nbsp;&nbsp;<span class="property">content:</span> <span class="string">''</span>;<br/>
+&nbsp;&nbsp;<span class="property">position:</span> <span class="value">absolute</span>;<br/>
+&nbsp;&nbsp;<span class="property">transform:</span> <span class="value">scaleX(0)</span>;<br/>
+&nbsp;&nbsp;<span class="property">transform-origin:</span> <span class="value">left</span>;<br/>
+&nbsp;&nbsp;<span class="property">transition:</span> <span class="value">transform 0.3s ease</span>;<br/>
+}<br/><br/>
+<span class="keyword">.card:hover::before</span> {<br/>
+&nbsp;&nbsp;<span class="property">transform:</span> <span class="value">scaleX(1)</span>;<br/>
+}
+                        </div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>📱 Media Queries & Responsive Design</summary>
+                    <div class="mt-2">
+                        <p>Modern media queries enable truly responsive layouts that adapt to any device.</p>
+                        <div class="code-block">
+<span class="keyword">@media (max-width: 768px)</span> {<br/>
+&nbsp;&nbsp;<span class="keyword">.grid-2col</span> {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">grid-template-columns:</span> <span class="value">1fr</span>; <span class="comment">/* Stack to 1 column */</span><br/>
+&nbsp;&nbsp;}<br/>
+}<br/><br/>
+<span class="keyword">@media (prefers-reduced-motion: reduce)</span> {<br/>
+&nbsp;&nbsp;<span class="keyword">*</span> {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">animation:</span> <span class="value">none !important</span>; <span class="comment">/* Respect accessibility */</span><br/>
+&nbsp;&nbsp;}<br/>
+}
+                        </div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>🔧 CSS Variables (Custom Properties)</summary>
+                    <div class="mt-2">
+                        <p>CSS Variables enable dynamic theming and maintainable stylesheets.</p>
+                        <div class="code-block">
+<span class="keyword">:root</span> {<br/>
+&nbsp;&nbsp;<span class="property">--primary:</span> <span class="value">#2563eb</span>;<br/>
+&nbsp;&nbsp;<span class="property">--shadow-lg:</span> <span class="value">0 10px 15px -3px rgba(0, 0, 0, 0.1)</span>;<br/>
+&nbsp;&nbsp;<span class="property">--spacing:</span> <span class="value">1rem</span>;<br/>
+}<br/><br/>
+<span class="keyword">button</span> {<br/>
+&nbsp;&nbsp;<span class="property">color:</span> <span class="value">var(--primary)</span>;<br/>
+&nbsp;&nbsp;<span class="property">box-shadow:</span> <span class="value">var(--shadow-lg)</span>;<br/>
+&nbsp;&nbsp;<span class="property">padding:</span> <span class="value">var(--spacing)</span>;<br/>
+}
+                        </div>
+                    </div>
+                </details>
+            </article>
+        </section>
+
+        <!-- Section 4: HTML5 Semantic Elements -->
+        <section>
+            <h2>📄 HTML5 Semantic Structure</h2>
+            
+            <article>
+                <p>HTML5 introduces semantic elements that clearly describe their meaning to both the browser and developer:</p>
+
+                <div class="grid-2col" style="margin-top: 1.5rem;">
+                    <div style="border-left: 4px solid var(--primary); padding-left: 1rem;">
+                        <code>&lt;section&gt;</code>
+                        <p style="margin: 0.5rem 0; color: var(--text-secondary);">Thematic grouping of content with its own heading.</p>
+                    </div>
+                    <div style="border-left: 4px solid var(--primary); padding-left: 1rem;">
+                        <code>&lt;article&gt;</code>
+                        <p style="margin: 0.5rem 0; color: var(--text-secondary);">Independent, self-contained content (blog post, news article).</p>
+                    </div>
+                    <div style="border-left: 4px solid var(--success); padding-left: 1rem;">
+                        <code>&lt;aside&gt;</code>
+                        <p style="margin: 0.5rem 0; color: var(--text-secondary);">Sidebar or supplementary content tangentially related to main content.</p>
+                    </div>
+                    <div style="border-left: 4px solid var(--success); padding-left: 1rem;">
+                        <code>&lt;header&gt;</code>
+                        <p style="margin: 0.5rem 0; color: var(--text-secondary);">Introductory content or group of navigational aids.</p>
+                    </div>
+                    <div style="border-left: 4px solid var(--warning); padding-left: 1rem;">
+                        <code>&lt;footer&gt;</code>
+                        <p style="margin: 0.5rem 0; color: var(--text-secondary);">Footer information (copyright, links, metadata).</p>
+                    </div>
+                    <div style="border-left: 4px solid var(--warning); padding-left: 1rem;">
+                        <code>&lt;nav&gt;</code>
+                        <p style="margin: 0.5rem 0; color: var(--text-secondary);">Navigation links section.</p>
+                    </div>
+                </div>
+
+                <details class="mt-3">
+                    <summary>📊 HTML5 Structure Benefits</summary>
+                    <div class="mt-2">
+                        <ul style="padding-left: 1.5rem;">
+                            <li><strong>SEO:</strong> Search engines understand document structure better</li>
+                            <li><strong>Accessibility:</strong> Screen readers navigate content more effectively</li>
+                            <li><strong>Readability:</strong> Code is self-documenting and maintainable</li>
+                            <li><strong>Standards:</strong> Consistent across all modern browsers</li>
+                        </ul>
+                    </div>
+                </details>
+            </article>
+        </section>
+
+        <!-- Section 5: Interactive Decision Tree -->
+        <section>
+            <h2>🎯 When to Use What: Interactive Guide</h2>
+            
+            <article>
+                <div class="flex-demo">
+                    <details open>
+                        <summary>❓ Question 1: Single Direction or Dual Axis?</summary>
+                        <div class="mt-2">
+                            <p><strong>Scenario:</strong> You're building a product listing page with a sidebar filter panel.</p>
+                            <p style="color: var(--text-secondary);">The main layout needs the filter bar on the left and products on the right → <span class="feature-badge">Use Grid</span></p>
+                            <p style="color: var(--text-secondary);">But each product card's internals (image, title, price) stack vertically → <span class="feature-badge">Nest Flexbox</span></p>
+                        </div>
+                    </details>
+
+                    <details open>
+                        <summary>❓ Question 2: Fixed or Flexible Spacing?</summary>
+                        <div class="mt-2">
+                            <p><strong>Scenario:</strong> Navigation items that should fill available space with equal gaps.</p>
+                            <p style="color: var(--text-secondary);">Use Flexbox with <code style="background: var(--light); padding: 2px 6px; border-radius: 4px;">gap</code> property instead of margin hacks → <span class="feature-badge">More Maintainable</span></p>
+                        </div>
+                    </details>
+
+                    <details open>
+                        <summary>❓ Question 3: Content Order vs Visual Order?</summary>
+                        <div class="mt-2">
+                            <p><strong>Scenario:</strong> Mobile-first design where visual layout changes on different screen sizes.</p>
+                            <p style="color: var(--text-secondary);">Both Flexbox and Grid decouple content order from visual order using <code style="background: var(--light); padding: 2px 6px; border-radius: 4px;">order</code> property or <code style="background: var(--light); padding: 2px 6px; border-radius: 4px;">grid-auto-flow</code> → <span class="feature-badge">Accessibility Win</span></p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="mt-3" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid var(--warning); border-radius: 8px; padding: 1rem; color: #92400e;">
+                    <strong>💡 Pro Tip:</strong> In modern web development, you'll almost always use <strong>Grid for page layouts</strong> and <strong>Flexbox for component internals</strong>. Combining them is the sweet spot.
+                </div>
+            </article>
+        </section>
+
+        <!-- Section 6: The Big Picture -->
+        <section>
+            <h2>🌟 The Big Picture: Why This Matters</h2>
+            
+            <article style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); padding: 2rem; border-radius: 12px; color: white;">
+                <h3 style="color: white; margin-top: 0;">Evolution of Web Layouts</h3>
+                <p>We've moved from <strong>fighting CSS</strong> (floats, clearfix hacks, table layouts) to <strong>working with it</strong> (semantic, intentional layout tools).</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3);">
+                        <strong>Before (2000s)</strong>
+                        <p style="margin: 0.5rem 0; font-size: 0.9rem;">Table layouts, spacer GIFs, float hacks</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3);">
+                        <strong>Transition (2010s)</strong>
+                        <p style="margin: 0.5rem 0; font-size: 0.9rem;">CSS frameworks (Bootstrap), complex media queries</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3);">
+                        <strong>Today (2020s)</strong>
+                        <p style="margin: 0.5rem 0; font-size: 0.9rem;">Flexbox + Grid, CSS variables, native responsiveness</p>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p><strong>Modern Web Development Stack</strong></p>
+        <div>
+            <span class="footer-badge">CSS3</span>
+            <span class="footer-badge">HTML5</span>
+            <span class="footer-badge">Flexbox</span>
+            <span class="footer-badge">Grid</span>
+            <span class="footer-badge">Semantic</span>
+            <span class="footer-badge">Responsive</span>
+            <span class="footer-badge">Accessible</span>
+        </div>
+        <p style="margin-top: 1.5rem; font-size: 0.9rem;">Built with advanced CSS3 animations, HTML5 semantics, and modern layout techniques.</p>
+    </footer>
+</body>
+</html>
